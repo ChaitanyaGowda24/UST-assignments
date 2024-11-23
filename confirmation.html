@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation Page</title>
+</head>
+<body>
+    <h1>Confirmation Page</h1>
+
+    <form action="save.html" method="post">
+        <!-- Display fields with user-provided information -->
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" value="{{firstName}}" required><br><br>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" value="{{lastName}}" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{email}}" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" value="{{phone}}"><br><br>
+
+        <!-- Option to save the data -->
+        <input type="submit" value="Save">
+    </form>
+
+    <!-- Form that lets the user edit their details (if they wish to change) -->
+    <form action="registration.html" method="get">
+        <input type="hidden" name="firstName" value="{{firstName}}">
+        <input type="hidden" name="lastName" value="{{lastName}}">
+        <input type="hidden" name="email" value="{{email}}">
+        <input type="hidden" name="phone" value="{{phone}}">
+
+        <input type="submit" value="Edit Information">
+    </form>
+</body>
+</html>
