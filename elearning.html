@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnify</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f7;
+            scroll-behavior: smooth;
+            background-image: url('background-pattern.jpg'); /* URL of a new subtle pattern */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #25274d;
+            color: white;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            background-image: url('https://source.unsplash.com/1600x900/?knowledge,education');
+            background-size: cover;
+            background-blend-mode: overlay;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero button {
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .hero button:hover {
+            background-color: #ff6347;
+        }
+
+        /* Course Categories */
+        .courses {
+            padding: 60px 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        .courses h2 {
+            font-size: 2.5rem;
+            color: #25274d;
+            margin-bottom: 25px;
+        }
+
+        .course-list {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .course {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 30%;
+            margin: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .course:hover {
+            transform: translateY(-10px);
+        }
+
+        .course h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #25274d;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background-color: #2e4053;
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .testimonial {
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .testimonial span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #ff7f50;
+        }
+
+        /* About Section */
+        .about {
+            padding: 50px 40px;
+            text-align: center;
+            background-color: #25274d;
+            color: white;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            color: #ff7f50;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #191c24;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #ff7f50;
+            text-decoration: none;
+        }
+
+        #contact {
+            padding: 30px 40px 80px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <h1>Learnify</h1>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div>
+            <h1>Empower Your Knowledge</h1>
+            <p>Join our community and take your skills to new heights!</p>
+            <button>Explore Courses</button>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="courses">
+        <h2>Our Top Courses</h2>
+        <div class="course-list">
+            <div class="course">
+                <h3>Frontend Development</h3>
+                <p>Master HTML, CSS, JavaScript, and React.</p>
+            </div>
+            <div class="course">
+                <h3>Data Analytics</h3>
+                <p>Gain insights from data using Python and SQL.</p>
+            </div>
+            <div class="course">
+                <h3>Visual Design</h3>
+                <p>Design eye-catching graphics with top tools.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>Who We Are</h2>
+        <p>
+            Learnify is a trusted learning platform offering a wide range of courses. From programming to design,
+            we help you grow and succeed with world-class instructors and community support.
+        </p>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <h2>Student Feedback</h2>
+        <div class="testimonial">
+            <p>"A fantastic resource for lifelong learning!"</p>
+            <span>- Chris Parker</span>
+        </div>
+        <div class="testimonial">
+            <p>"Clear lessons and supportive community. Highly recommended!"</p>
+            <span>- Jamie Lynn</span>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="about">
+        <h2>Contact Us</h2>
+        <p>Email: hello@learnify.com | Phone: +123 456 789</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Learnify. All rights reserved. <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
