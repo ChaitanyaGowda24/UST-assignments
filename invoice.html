@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Statement Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Verdana', sans-serif;
+            line-height: 1.5;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .details-box {
+            border: 1px solid #ccc;
+            padding: 25px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .details-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        #invoice {
+            display: none;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #e2e6ea;
+            font-weight: bold;
+        }
+
+        .bank-details {
+            margin: 25px 0;
+            padding: 25px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="invoiceForm">
+            <h1>Billing Statement Generator</h1>
+            
+            <div class="form-header">
+                <div class="form-group">
+                    <label for="invoiceName">Statement Name:</label>
+                    <input type="text" id="invoiceName" required>
+                </div>
+                <div class="form-group">
+                    <label for="invoiceNo">Statement No:</label>
+                    <input type="text" id="invoiceNo" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Issue Date:</label>
+                    <input type="date" id="date" required>
+                </div>
+            </div>
+
+            <div class="details-box">
+                <div class="details-content">
+                    <div class="client-details">
+                        <h3>Client Information</h3>
+                        <label for="clientName">Client Name:</label>
+                        <input type="text" id="clientName" required>
+                        
+                        <label for="clientAddress">Client Address:</label>
+                        <input type="text" id="clientAddress" required>
+                        
+                        <label for="clientContact">Contact Number:</label>
+                        <input type="text" id="clientContact" required>
+                        
+                        <label for="poNo">Purchase Order No:</label>
+                        <input type="text" id="poNo" required>
+                    </div>
+
+                    <div class="company-details">
+                        <h3>Company Information</h3>
+                        <label for="companyName">Company Name:</label>
+                        <input type="text" id="companyName" required>
+                        
+                        <label for="companyAddress">Company Address:</label>
+                        <input type="text" id="companyAddress" required>
+                        
+                        <label for="trainerName">Consultant Name:</label>
+                        <input type="text" id="trainerName" required>
+
+                        <label for="trainerContact">Consultant Contact:</label>
+                        <input type="text" id="trainerContact" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-box">
+                <h3>Service Information</h3>
+                <div id="serviceItems">
+                    <div class="form-row service-item">
+                        <div class="form-group">
+                            <label for="description">Service Description:</label>
+                            <input type="text" class="description" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rateType">Billing Type:</label>
+                            <select class="rateType" required>
+                                <option value="hourly">Hourly Rate</option>
+                                <option value="daily">Daily Rate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Hours/Days:</label>
+                            <input type="number" class="quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rate">Rate (INR):</label>
+                            <input type="number" class="rate" required>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="addServiceItem()">Add Service Item</button>
+            </div>
+
+            <div class="details-box">
+                <h3>Bank Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bankName">Bank Name:</label>
+                        <input type="text" id="bankName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNo">Account Number:</label>
+                        <input type="text" id="accountNo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ifscCode">IFSC Code:</label>
+                        <input type="text" id="ifscCode" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="accountHolderName">Account Holder:</label>
+                        <input type="text" id="accountHolderName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="panNumber">PAN:</label>
+                        <input type="text" id="panNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bankAddress">Bank Address:</label>
+                        <input type="text" id="bankAddress" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Generate Statement</button>
+        </form>
+
+        <div id="invoice">
+            <div class="invoice-header">
+                <h2>BILLING STATEMENT</h2>
+                <div>
+                    <p><strong>Statement Name:</strong> <span id="displayInvoiceName"></span></p>
+                    <p><strong>Statement No:</strong> <span id="displayInvoiceNo"></span></p>
+                    <p><strong>Issue Date:</strong> <span id="displayDate"></span></p>
+                </div>
+            </div>
+
+            <div class="details-box">
+                <div class="details-content">
+                    <div>
+                        <h3>CLIENT</h3>
+                        <p id="displayClientName"></p>
+                        <p id="displayClientAddress"></p>
+                        <p><strong>Contact Number:</strong> <span id="displayClientContact"></span></p>
+                        <p><strong>Purchase Order No:</strong> <span id="displayPoNo"></span></p>
+                    </div>
+                    <div>
+                        <h3>COMPANY</h3>
+                        <p id="displayCompanyName"></p>
+                        <p id="displayCompanyAddress"></p>
+                        <p><strong>Consultant:</strong> <span id="displayTrainerName"></span></p>
+                        <p><strong>Contact:</strong> <span id="displayTrainerContact"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>SERVICES</h3>
+            <table id="servicesTable">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Billing Type</th>
+                        <th>Hours/Days</th>
+                        <th>Rate (INR)</th>
+                        <th>Total (INR)</th>
+                    </tr>
+                </thead>
+                <tbody id="servicesBody"></tbody>
+            </table>
+
+            <div class="bank-details">
+                <h3>BANK DETAILS</h3>
+                <p><strong>Bank Name:</strong> <span id="displayBankName"></span></p>
+                <p><strong>Account Number:</strong> <span id="displayAccountNo"></span></p>
+                <p><strong>IFSC Code:</strong> <span id="displayIfscCode"></span></p>
+                <p><strong>Account Holder:</strong> <span id="displayAccountHolderName"></span></p>
+                <p><strong>PAN:</strong> <span id="displayPanNumber"></span></p>
+                <p><strong>Bank Address:</strong> <span id="displayBankAddress"></span></p>
+            </div>
+
+            <div class="signature">
+                <p>__________________________</p>
+                <p>Authorized Signature</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addServiceItem() {
+            const serviceItems = document.getElementById('serviceItems');
+            const serviceItem = document.createElement('div');
+            serviceItem.className = 'form-row service-item';
+
+            serviceItem.innerHTML = `
+                <div class="form-group">
+                    <label for="description">Service Description:</label>
+                    <input type="text" class="description" required>
+                </div>
+                <div class="form-group">
+                    <label for="rateType">Billing Type:</label>
+                    <select class="rateType" required>
+                        <option value="hourly">Hourly Rate</option>
+                        <option value="daily">Daily Rate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Hours/Days:</label>
+                    <input type="number" class="quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="rate">Rate (INR):</label>
+                    <input type="number" class="rate" required>
+                </div>
+            `;
+
+            serviceItems.appendChild(serviceItem);
+        }
+
+        document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Display invoice data
+            document.getElementById('displayInvoiceName').innerText = document.getElementById('invoiceName').value;
+            document.getElementById('displayInvoiceNo').innerText = document.getElementById('invoiceNo').value;
+            document.getElementById('displayDate').innerText = document.getElementById('date').value;
+
+            document.getElementById('displayClientName').innerText = document.getElementById('clientName').value;
+            document.getElementById('displayClientAddress').innerText = document.getElementById('clientAddress').value;
+            document.getElementById('displayClientContact').innerText = document.getElementById('clientContact').value;
+            document.getElementById('displayPoNo').innerText = document.getElementById('poNo').value;
+
+            document.getElementById('displayCompanyName').innerText = document.getElementById('companyName').value;
+            document.getElementById('displayCompanyAddress').innerText = document.getElementById('companyAddress').value;
+            document.getElementById('displayTrainerName').innerText = document.getElementById('trainerName').value;
+            document.getElementById('displayTrainerContact').innerText = document.getElementById('trainerContact').value;
+
+            const servicesBody = document.getElementById('servicesBody');
+            servicesBody.innerHTML = '';
+            const serviceItems = document.getElementsByClassName('service-item');
+
+            for (let item of serviceItems) {
+                const description = item.getElementsByClassName('description')[0].value;
+                const rateType = item.getElementsByClassName('rateType')[0].value;
+                const quantity = item.getElementsByClassName('quantity')[0].value;
+                const rate = item.getElementsByClassName('rate')[0].value;
+
+                const total = quantity * rate;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${rateType}</td>
+                    <td>${quantity}</td>
+                    <td>${rate}</td>
+                    <td>${total}</td>
+                `;
+                servicesBody.appendChild(row);
+            }
+
+            document.getElementById('displayBankName').innerText = document.getElementById('bankName').value;
+            document.getElementById('displayAccountNo').innerText = document.getElementById('accountNo').value;
+            document.getElementById('displayIfscCode').innerText = document.getElementById('ifscCode').value;
+            document.getElementById('displayAccountHolderName').innerText = document.getElementById('accountHolderName').value;
+            document.getElementById('displayPanNumber').innerText = document.getElementById('panNumber').value;
+            document.getElementById('displayBankAddress').innerText = document.getElementById('bankAddress').value;
+
+            // Show the generated invoice
+            document.getElementById('invoice').style.display = 'block';
+
+            // Generate PDF
+            const invoice = document.getElementById('invoice');
+            html2pdf()
+                .from(invoice)
+                .save('billing_statement.pdf');
+        });
+    </script>
+</body>
+</html>
